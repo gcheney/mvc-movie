@@ -57,7 +57,8 @@ namespace MvcMovie
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, 
+            ApplicationDbContext context)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -77,7 +78,7 @@ namespace MvcMovie
 
             app.UseIdentity();
 
-            // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
+            // Add external authentication middleware below. 
             #region routes
             app.UseMvc(routes =>
             {
@@ -87,9 +88,9 @@ namespace MvcMovie
             });
             #endregion
 
-            // Seed the database
-            SeedData.Initialize(app.ApplicationServices);
-
+            // Seed the database - two different methods
+            //SeedData.Initialize(app.ApplicationServices);
+            DbInitializer.Initialize(context);
         }
     }
 }
